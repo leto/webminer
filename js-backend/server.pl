@@ -31,7 +31,7 @@ my %CFG = (
 	STAT_SHOW_BAN		=> 5,
 
 	HTTP_ADDR		=> '0.0.0.0',
-	HTTP_PORT		=> 8888,
+	HTTP_PORT		=> 9999,
 	HTTP_CLIENT_TIMEOUT	=> 60,
 	HTTP_HIDDEN_ADMIN_PAGE	=> 'admin',
 	HTTP_WS_PING_INTERVAL	=> 30,
@@ -156,17 +156,19 @@ sub stratum_got_target {
 	I "target $TARGET";
 	$STRATUM_STATE = 'got target';
 
+=pod
 	stratum_tx {
 		id	=> ID_EXTRANONCE,
 		method	=> 'mining.extranonce.subscribe',
 		params	=> [],
 	};
+=cut
 }
 
 sub stratum_got_job {
 	my ($params) = @_;
 
-	@$params == 8 or die 'bad number of job params';
+	@$params == 8 or @$params == 9 or die 'bad number of job params';
 	I "job @$params";
 	$JOB_ID = $params->[0];
 	$JOB = join '', @$params[1..6], $NONCE_1;
