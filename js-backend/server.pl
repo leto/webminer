@@ -33,16 +33,16 @@ my %CFG = (
 	HTTP_ADDR		=> '0.0.0.0',
 	HTTP_PORT		=> 9999,
 	HTTP_CLIENT_TIMEOUT	=> 60,
-	HTTP_HIDDEN_ADMIN_PAGE	=> 'admin',
+	HTTP_HIDDEN_ADMIN_PAGE	=> 'stats',
 	HTTP_WS_PING_INTERVAL	=> 30,
 
 	POOL_HOST		=> 'us.madmining.club',
 	POOL_PORT		=> 3333,
-	POOL_WORKER_NAME	=> 't1gGCUXqAM9LdJQrYTCiLgcU4vAjgmERawD.js',
+	POOL_WORKER_NAME	=> 't1erZzaHqS48zv1KGS8ZK86iYz9mEJARyoa',
 	POOL_WORKER_PASS	=> 'x',
 	POOL_KEEP_INTERVAL	=> 1 * 60,
 	POOL_SESSION_TIMEOUT	=> 10 * 60,
-	POOL_MINER_NAME		=> 'jazecminer',
+	POOL_MINER_NAME		=> 'hushJminer',
 );
 
 if (@ARGV) {
