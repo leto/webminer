@@ -106,9 +106,9 @@ current nonce <b id="nonce">?</b></p>
 		    s == 0 ? "<font color=\"#FF0000\">waiting for " +
 		        "WebAssebly, check your javascript console " +
 		        "if it takes too long</font>." :
-		    s == 1 ? "WebAssembly is ok. waiting for a job." :
+		    s == 1 ? "WebAssembly detected correctly, waiting for a Stratum job from backend..." :
 		    s == 2 ? "mining." :
-		    s == 3 ? "mining!" : "wtf?");
+		    s == 3 ? "mining!" : "Something went really wrong!");
 	}
 	set_state (0);
 
