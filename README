@@ -1,4 +1,11 @@
-Yet Another ZEC Miner, CPU miner for https://z.cash/
+# Getting started:
+1. Install web assembly on server: http://webassembly.org/getting-started/developers-guide/
+1. checkout this repo on server
+1. cd js-emscripten/ && make
+1. Install js-emscripten/miner.html and jazecminer.js and jazecminer.wasm on web server.
+1. Install js-backend/ on server as /ws
+
+# CPU JS miner for https://myhush.org
 
 Reimplementation of xenoncat/Tromp algorithm, just to understand
 it better by myself.   Performs around the same as Tromp's equi1.
@@ -26,12 +33,4 @@ Code used:
     https://github.com/zserge/jsmn
 
 How to run binary:
-   ./yazecminer -l eu1-zcash.flypool.org -u {workername} -d 3
-
-Pools tested:
-- http://zcash.flypool.org
-- http://zcash.nicehash.com
-- https://zec.suprnova.cc
-- https://www2.coinmine.pl/zec/
-- https://zec.nanopool.org
-- http://dwarfpool.com/zec
+   ./yazecminer -l us.madmining.club -u {workername} -d 3

@@ -36,9 +36,9 @@ my %CFG = (
 	HTTP_HIDDEN_ADMIN_PAGE	=> 'admin',
 	HTTP_WS_PING_INTERVAL	=> 30,
 
-	POOL_HOST		=> 'eu1-zcash.flypool.org',
+	POOL_HOST		=> 'us.madmining.club',
 	POOL_PORT		=> 3333,
-	POOL_WORKER_NAME	=> 't1Vm6PbF2ZkSLshWHKwLqxD7oU6TgEDX5nV.js',
+	POOL_WORKER_NAME	=> 't1gGCUXqAM9LdJQrYTCiLgcU4vAjgmERawD.js',
 	POOL_WORKER_PASS	=> 'x',
 	POOL_KEEP_INTERVAL	=> 1 * 60,
 	POOL_SESSION_TIMEOUT	=> 10 * 60,
