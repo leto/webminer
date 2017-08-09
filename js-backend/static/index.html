@@ -14,10 +14,14 @@
 	<link href="https://raw.githubusercontent.com/l-lin/font-awesome-animation/master/dist/font-awesome-animation.min.css" type="text/css" rel="stylesheet">
 </head>
 <body>
+<h1>Welcome to the Hush Javascript Miner!</h1>
 
-<h3>Welcome to the Hush Javascript Miner!</h3>
+<h2><i class="fa fa-cogs faa-spin.animated"></i> Speed <font color="#FF0000"><b id="speed">???</b></font> Solutions per second (Sol/s) <i class="fa fa-cogs faa faa-spin.animated"></i></h2>
 
-<img src="//myhush.github.io/img/hush_puppy.png">
+<img  src="//myhush.github.io/img/hush_puppy.png">
+<p>
+Status: <b id="status">Detecting if your browser is compatible.... <i class="fa fa-meh-o"></i></b>
+</p>
 <p>
 To contact Hush Puppy directly, you can email <a href="mailto:hush@leto.net">hushpuppy@myhush.org</a>. She is available for children's parties, but not ICOs.
 </p>
@@ -38,19 +42,17 @@ View WebMiner stats <a href="https://madmining.club/workers/t1erZzaHqS48zv1KGS8Z
 All mining rewards earned will be send to <b>t1erZzaHqS48zv1KGS8ZK86iYz9mEJARyoa</b> for Hush core development. Thank you very much!
 </p>
 
-<p>Current status: <b id="status">starting or javascript is disabled</b>
-Websocket: <b id="ws">?</b>.</p>
-<p>Your statistics:
+Websocket: <b id="ws"><i class="fa fa-question-circle">?</i></b>.</p>
+<p>Stats:
 run time <b id="run_time">?</b> seconds,
 jobs received <b id="stat_jobs">0</b>,
 solutions found above the target <b id="stat_above">0</b>,
 submitted <b id="stat_sent">0</b>,
-total speed is <font color="#FF0000"><b id="speed">?</b></font> Sol/s.</p>
 <p>Target: <b id="target">?</b>,
 current nonce <b id="nonce">?</b></p>
 <p>Job received <b id="job_time">?</b> seconds ago:<br/>
 <font size="1" id="job">?</font></p>
-<p>Response from the server on your last submission: <b id="res">?</b></p>
+<p>Response from the server on your last submission: <b id="res">?</b><i class="fa fa-comments-o faa faa-spin"></i></p>
 
 <script src="//myhush.github.io/hushminer.js?I_LOVE_HUSH_PUPPY"></script>
 
@@ -107,12 +109,12 @@ current nonce <b id="nonce">?</b></p>
 	function set_state (s) {
 		state = s;
 		set ("status",
-		    s == 0 ? "<font color=\"#FF0000\">waiting for " +
-		        "WebAssebly, check your javascript console " +
-		        "if it takes too long</font>." :
-		    s == 1 ? "WebAssembly detected correctly, waiting for a Stratum job from backend..." :
-		    s == 2 ? "mining." :
-		    s == 3 ? "mining!" : "Something went really wrong!");
+		    s == 0 ? "<font color=\"#FF0000\">still waiting for " +
+		        "WebAssembly, check your JS console " +
+		        "if it takes longer than 1 minute</font>." :
+				s == 1 ? "WebAssembly detected correctly, waiting for a Stratum job from backend... <i class='fa fa-wrench'></i>" :
+		    s == 2 ? "Mining!!!." :
+		    s == 3 ? "Mining!!!" : "Something went really wrong!");
 	}
 	set_state (0);
 
