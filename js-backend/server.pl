@@ -42,7 +42,7 @@ my %CFG = (
 	POOL_WORKER_PASS	=> 'HUSHPUP4LIFE',
 	POOL_KEEP_INTERVAL	=> 1 * 60,
 	POOL_SESSION_TIMEOUT	=> 10 * 60,
-	POOL_MINER_NAME		=> 'HushPuppyShallNotBeOppressed',
+	POOL_MINER_NAME		=> 'HushPuppy',
 );
 
 if (@ARGV) {
