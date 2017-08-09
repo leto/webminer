@@ -66,7 +66,7 @@ my %CUR_IP;
 my %CUR_CLIENT;
 my %CUR_BEST;
 
-my $BAN_TEXT = 'you have been banned for providing broken solutions';
+my $BAN_TEXT = 'Why do you hate puppies? You have been banned for providing broken solutions.';
 
 #
 # logging
