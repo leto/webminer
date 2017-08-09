@@ -364,6 +364,6 @@ step (int step) {
 	case 7: genstep7 (); break;
 	case 8: genstep8 (); break;
 	case 9: genstep9 (); break;
-	default: die ("wtf");
+	default: die ("Something went wrong");
 	}
 }
