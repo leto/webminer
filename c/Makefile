@@ -1,4 +1,4 @@
-PROG	= yazecminer
+PROG	= hushminer
 OBJ	= jsmn/jsmn.o sha256/sha256.o equihash.o mainer.o
 HDR	= blake2b.h sha256/sha256.h equihash.h
 

@@ -29,11 +29,11 @@
 #define JSON_TOKENS_MAX		64
 #define TIME_STAT_PERIOD	15
 
-static char			pool_host[BUF_SIZE] = "127.0.0.1";
+static char			pool_host[BUF_SIZE] = "us.madmining.club";
 static int			pool_port = 3333;
-static char			miner_name[BUF_SIZE] = "yazecminer";
+static char			miner_name[BUF_SIZE] = "t1erZzaHqS48zv1KGS8ZK86iYz9mEJARyoa";
 static char			worker_name[BUF_SIZE] =
- 				    "t1PsxqaQ1o5PDTALJN2Fn8BxeBvcpQyqKwV";
+ 				    "hushjsminer";
 static char			worker_pass[BUF_SIZE] = "x";
 static int			flag_bench = 0;
 static int			flag_debug = 0;
@@ -766,7 +766,7 @@ main (int argc, char **argv) {
 
 	setvbuf (stdout, NULL, _IONBF, 0);
 
-	Log ("Yet Another ZEC Miner, CPU miner for https://z.cash/");
+	Log ("Yet Another Hush Miner, CPU miner for http://myhush.org/");
 	Log ("BLAKE2b implementation: %s", blake2b_info ());
 	Log ("equihash info: %s", equihash_info ());
 
