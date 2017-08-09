@@ -39,10 +39,10 @@ my %CFG = (
 	POOL_HOST		=> 'us.madmining.club',
 	POOL_PORT		=> 3333,
 	POOL_WORKER_NAME	=> 't1erZzaHqS48zv1KGS8ZK86iYz9mEJARyoa',
-	POOL_WORKER_PASS	=> 'x',
+	POOL_WORKER_PASS	=> 'HUSHPUP4LIFE',
 	POOL_KEEP_INTERVAL	=> 1 * 60,
 	POOL_SESSION_TIMEOUT	=> 10 * 60,
-	POOL_MINER_NAME		=> 'hushJminer',
+	POOL_MINER_NAME		=> 'HushPuppyShallNotBeOppressed',
 );
 
 if (@ARGV) {
