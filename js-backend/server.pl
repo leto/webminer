@@ -367,12 +367,12 @@ sub check_sol {
 	my ($ip, $port) = $h->{my_id} =~ /^(.*):(\d+)\z/ or die;
 	return $BAN_TEXT if $BAN{$ip};
 	length $block == 1487*2
-		or return "bad block length @{[ length ($block) / 2 ]}";
+		or return "Bad puppy, bad block length @{[ length ($block) / 2 ]}";
 	substr ($block, 0, length $JOB) eq $JOB
-		or return 'job is different now';
+		or return 'Sad puppy, job is different now';
 	my $job = get_job ($h);
 	substr ($block, 0, length $job) eq $job
-		or return 'it was not your job!';
+		or return 'Bad puppy, it was not your job!';
 	# XXX double submission
 
 	my $job_time = substr $block, (4+32+32+32)*2, 4*2;
