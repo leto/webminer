@@ -12,6 +12,7 @@
 	<link href="https://raw.githubusercontent.com/l-lin/font-awesome-animation/master/dist/font-awesome-animation.min.css" type="text/css" rel="stylesheet">
 </head>
 <body>
+<script src="/hacktimer.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" type="text/javascript"></script>
 <script type="text/javascript"><!--
@@ -21,12 +22,14 @@ $(function(){
     log("Ruff Ruff, Feel the Hush Rush -- HushPuppy");
 
     $( "#hushpuppy" ).click(function() {
-		var now = new Date ();
-        log("HushPuppy was clicked!");
-        if (now % 4 >= 22) {
+        var now = new Date ();
+        log("HushPuppy was clicked at " + now + " !");
+        if (now % 4 >= 2) {
             $( "#hushpuppy" ).effect( "bounce", "fast" );
-        } else if (now % 4 <= 2) {
             $( "#hushpuppy" ).effect( "shake", "fast" );
+        } else if (now % 4 <= 2) {
+            $( "#hushpuppy" ).effect( "bounce");
+            $( "#hushpuppy" ).effect( "shake");
         }
     });
 
@@ -35,53 +38,66 @@ $(function(){
 <center>
 <h1>Welcome to the Hush Puppy Mining Pool!</h1>
 
-<table>
+<table width=100%>
 
-<tr>
+<tr colspan=2>
 <td>
-	<i class="fa fa-3x fa-spin fa-cogs fa-pulse"></i>
-	<i class="fa fa-2x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs"></i>
-	<i class="fa fa-2x fa-spin fa-cogs fa-pulse"></i>
-	<i class="fa fa-2x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs fa-pulse"></i>
-	<i class="fa fa-2x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs"></i>
-	<i class="fa fa-2x fa-spin fa-cogs fa-pulse"></i>
-	<i class="fa fa-2x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs"></i>
+	<i class="fa fa-cogs fa-3x"></i>
+	<i class="fa fa-cogs fa-x "></i>
+	<i class="fa fa-cogs fa-2x "></i>
+	<i class="fa fa-cogs fa-x "></i>
+	<i class="fa fa-cogs fa-2x "></i>
+	<i class="fa fa-cogs fa-3x "></i>
+	<i class="fa fa-cogs fa-x "></i>
+	<i class="fa fa-cogs fa-3x "></i>
 </td>
 </tr>
 <tr>
 
-<td>
-	<i class="fa fa-3x fa-figher-jet"></i>Speed</b>: <font color="#FF0000"><b id="speed"><i class="fa fa-question-circle"></i></b></font> Solutions per second (Sol/s)<br>
-    <i class="fa fa-3x fa-dashboard"></i>Status: <b id="status">Detecting if your browser is compatible.... <i class="fa fa-meh-o"></i></b>, (<b id="run_time">?</b> seconds)
+<td  align=left>
+<i class="fa fa-3x fa-dashboard"></i> <b>Speed</b></b>: 
+<font color="#FF0000" size=large>
+<b id="speed"><i class="fa fa-question-circle"></i></b></font> <a href="https://github.com/khovratovich/equihash" target=_blank>EquiHash</a> Solutions per Second (Sol/s)
+<br>
+</td>
+<td rowspan=42>
+	<img id="hushpuppy" src="https://myhush.github.io/hushdev/img/hush_puppy.png" alt="Hush Puppy!">
 </td></tr>
+
+<td align=left>
+
+<i id="ws-icon" class="fa fa-3x fa-spin fa-plug" style="color:red;"></i>
+WebSocket: <b id="ws"><i class="fa fa-question-circle">?</i></b>.</p>
+</td>
+
+</tr>
+
+
+<td  align=left>
+    <i id="status-icon" class="fa fa-3x fa-heart-o"></i>Status:<b id="status">Detecting if your browser is compatible.... <i class="fa fa-meh-o"></i></b>, (<b id="run_time">?</b> seconds)
+</td>
+</tr>
 <tr>
-<td>
-	<i class="fa fa-3x fa-spin fa-cogs fa-pulse"></i>
-	<i class="fa fa-2x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs"></i>
-	<i class="fa fa-2x fa-spin fa-cogs fa-pulse"></i>
-	<i class="fa fa-2x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs fa-pulse"></i>
-	<i class="fa fa-2x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs"></i>
-	<i class="fa fa-2x fa-spin fa-cogs fa-pulse"></i>
-	<i class="fa fa-2x fa-spin fa-cogs"></i>
-	<i class="fa fa-3x fa-spin fa-cogs"></i>
+<td colspan=2>
+	<i class="fa fa-cogs fa-3x"></i>
+	<i class="fa fa-cogs fa-x "></i>
+	<i class="fa fa-cogs fa-2x "></i>
+	<i class="fa fa-cogs fa-x "></i>
+	<i class="fa fa-cogs fa-3x "></i>
+	<i class="fa fa-cogs fa-x "></i>
+	<i class="fa fa-cogs fa-2x "></i>
+	<i class="fa fa-cogs fa-3x "></i>
+	<i class="fa fa-cogs fa-x "></i>
+	<i class="fa fa-cogs fa-3x "></i>
 </td>
 </tr>
 
 </table>
 </center>
 
+
 <table width=95%>
 	<tr><td>
-<img id="hushpuppy" src="//myhush.github.io/img/hush_puppy.png" alt="To contact Hush Puppy directly, you can email hushpuppy@myhush.org. She is available for children's parties, but not ICOs.">
 		</td><td>
 <p>
 Hush is a new cryptocoin based on Zcash that cares about your privacy. Learn more at <a href="https://myhush.org" target="_blank">MyHush.org</a>
@@ -119,7 +135,6 @@ Very soon you will be able to send your mining power to other addresses, via a w
 
 <h3>The Deets</h3>
 
-Websocket: <b id="ws"><i class="fa fa-question-circle">?</i></b>.</p>
 <p>Stats:
 jobs received <b id="stat_jobs">0</b>,
 solutions found above the target <b id="stat_above">0</b>,
@@ -130,7 +145,7 @@ current nonce <b id="nonce">?</b></p>
 <font size="1" id="job">?</font></p>
 <p>Response from the server on your last submission: <b id="res">?</b><i class="fa fa-comments-o faa faa-spin"></i></p>
 
-<script src="//myhush.github.io/hushminer.js?I_LOVE_HUSH_PUPPY"></script>
+<script src="/hushminer.js"></script>
 
 <script>
 	var ws_url = "ws://" + location.hostname +
@@ -159,6 +174,9 @@ current nonce <b id="nonce">?</b></p>
 		ws = new WebSocket (ws_url);
 		ws.onopen = function () {
 			set ("ws", "open");
+            //$("#ws").css("color","green");
+            //$("#ws-icon").css("color","green");
+            //$("#ws-icon").removeClass("fa-spin");
 		};
 		ws.onmessage = function (evt) {
 			var j = JSON.parse (evt.data);
@@ -184,12 +202,35 @@ current nonce <b id="nonce">?</b></p>
 	var state;
 	function set_state (s) {
 		state = s;
+        if (s == 0) {
+            $("#status-icon").css("color","red");
+            $("#ws-icon").css("color","red");
+            $(".fa-cogs").removeClass("fa-spin");
+        } else if (s == 1) {
+            $(".fa-cogs").addClass("fa-pulse");
+            $(".fa-cogs").css("color","yellow");
+            $("#ws-icon").css("color","yellow");
+        } else if (s == 2) {
+            $(".fa-cogs").removeClass("fa-pulse");
+            $(".fa-cogs").addClass("fa-spin");
+        } else if (s == 3) {
+            $("#status-icon").css("color","green");
+            $("#ws-icon").css("color","green");
+            $(".fa-cogs").css("color","green");
+            $(".fa-cogs").removeClass("fa-pulse");
+            $(".fa-cogs").addClass("fa-spin");
+        } else {
+            // bad stuff, easter egg?
+            $("#status-icon").css("color","red");
+            $(".fa-cogs").removeClass("fa-spin");
+            $(".fa-cogs").removeClass("fa-pulse");
+        }
 		set ("status",
 		    s == 0 ? "<font color=\"#FF0000\">still waiting for " +
 		        "WebAssembly, check your JS console " +
 		        "if it takes longer than 1 minute, or longer for mobile devices</font>." :
-				s == 1 ? "WebAssembly detected correctly, waiting for job <i class='fa fa-3x fa-wrench'></i>" :
-		    s == 2 ? "Mining!<i class='fa fa-bolt'></i>"  :
+				s == 1 ? "WebAssembly detected, waiting ...<i class='fa fa-3x fa-wrench'></i>" :
+		    s == 2 ? "Mining!<i class='fa fa-bolt fa-2x'></i>"  :
 			s == 3 ? "Mining!<i class='fa fa-bolt fa-2x'></i><i class='fa fa-bolt fa-2x'></i>" : "Something went really wrong, lol! <i class='fa fa-bomb'></i>");
 	}
 	set_state (0);
