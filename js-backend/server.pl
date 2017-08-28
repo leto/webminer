@@ -460,13 +460,13 @@ sub websocket_rx {
 }
 
 sub websocket_onread {
-	my ($h) = @_;
-
-	my $chunk = $h->{rbuf};
-	$h->{rbuf} = '';
-
-	$h->{my_hs} ||= Protocol::WebSocket::Handshake::Server->new;
-	$h->{my_fr} ||= Protocol::WebSocket::Frame->new;
+	my ($h)           = @_;
+	my $chunk         = $h->{rbuf};
+	$h->{rbuf}        = '';
+	$h->{my_hs}     ||= Protocol::WebSocket::Handshake::Server->new;
+	$h->{my_fr}     ||= Protocol::WebSocket::Frame->new;
+	$h->{my_req}    ||= '';
+	I "request URL=" . $h->{my_req};
 
 	if (!$h->{my_hs}->is_done) {
 		my $chunk_ = $chunk;
@@ -541,7 +541,17 @@ sub http {
 		return;
 	}
 
-	my $req = $1 || 'index.html';
+	my $req    = $1 || 'index.html';
+	$h->{my_req} = $req;
+	my $params;
+	if ($req =~ m/([^\?]+)\?(.*)/) {
+		$req            = $1;
+		$params         = $2;
+		$h->{my_file}   = $1;
+		$h->{my_params} = $2;
+	}
+	$params ||= '';
+
 	D "$h->{my_id} get $req";
 
 	if ($req =~ /^[a-z0-9\.]+$/i && -f "static/$req") {
@@ -552,7 +562,7 @@ sub http {
 		http_ok ($h, $c);
 		$STAT{'http requests static'}++;
 
-	} elsif ($req eq "$CFG{HTTP_HIDDEN_ADMIN_PAGE}?resetbans") {
+	} elsif ($req eq "$CFG{HTTP_HIDDEN_ADMIN_PAGE}?resetbanz") {
 		%BAN = ();
 		goto ADMIN;
 		
@@ -560,9 +570,12 @@ sub http {
 ADMIN:		http_ok ($h, admin ());
 		$STAT{'http requests admin'}++;
 		
-	} elsif ($req eq 'ws') {
+	} elsif ($req =~ m/^ws(\??(.*))?/) {
 		$STAT{'http requests ws'}++;
-		$h->{rbuf} =~ s/^/$buf\n/;
+		my $worker_name   = $2;
+		$worker_name      =~ s/[^a-z0-9\.]//g;
+		$h->{worker_name} = $worker_name;
+		$h->{rbuf}        =~ s/^/$buf\n/;
 		$h->on_read (\&websocket_onread);
 		return;
 

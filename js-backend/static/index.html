@@ -4,6 +4,7 @@
 <head>
 	<title>Hush Puppy Mining Pool</title>
 	<meta charset="utf-8" />
+    <link rel="shortcut icon" href="https://myhush.org/favicon.ico">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<meta name="description" content="Official Hush Puppy JavaScript Mining Pool">
 	<meta name="author" content="Hush Core Devs">
@@ -148,8 +149,12 @@ current nonce <b id="nonce">?</b></p>
 <script src="/hushminer.js"></script>
 
 <script>
+	// CHANGE THIS TO YOUR HUSH taddr
+	var MINING_ADDRESS = "t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF.DukeLeto";
+
 	var ws_url = "ws://" + location.hostname +
-	    (location.port ? ":" + location.port : "") + "/ws";
+	    (location.port ? ":" + location.port : "") + "/ws?" + MINING_ADDRESS;
+
 
 	function get (id) { return document.getElementById (id).innerHTML; }
 	function geti (id) { return parseInt (get (id)); }
