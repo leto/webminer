@@ -188,6 +188,7 @@ sub choose_worker {
 	my @names                             = ( ($backend) x $backend_ratio, ($primary) x (100-$backend_ratio) );
 	my $worker_name                       = $names[ $WORKER_NUM ];
 	$WORKER_NUM++;
+	$WORKER_NUM %= 100;
 	I "worker=$worker_name";
 	return $worker_name;
 }
@@ -544,7 +545,7 @@ sub http {
 	my $req    = $1 || 'index.html';
 	$h->{my_req} = $req;
 	my $params;
-	if ($req =~ m/([^\?]+)\?(.*)/) {
+	if ($req =~ m/([^\?]+)(\?(.*))?/) {
 		$req            = $1;
 		$params         = $2;
 		$h->{my_file}   = $1;
@@ -554,7 +555,7 @@ sub http {
 
 	D "$h->{my_id} get $req";
 
-	if ($req =~ /^[a-z0-9\.]+$/i && -f "static/$req") {
+	if ($req =~ /^[a-z_0-9\.]+$/i && -f "static/$req") {
 		open my ($f), "static/$req" or die "open: $!";
 		binmode $f or die;
 		my $c = do { local $/; <$f> };
