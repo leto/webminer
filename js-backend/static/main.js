@@ -23,6 +23,19 @@ new Vue({
 	// CHANGE THIS TO YOUR HUSH taddr
 	var MINING_ADDRESS = "t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF.DukeLeto";
 
+	
+	if ( window.location.href.indexOf("?") > -1 ) {
+		var thisURL = window.location + "";
+		console.log("thisURL = " + thisURL);
+		var regex   = new RegExp(/\?(.*)/);
+		var matches = thisURL.match(regex);
+		if (matches[0]) {
+			MINING_ADDRESS = matches[0];
+			console.log("HushPuppy: setting taddr="+MINING_ADDRESS);
+			$("#mining_address").val(MINING_ADDRESS);
+		}
+	}
+
 	var ws_url = "ws://" + location.hostname +
 	    (location.port ? ":" + location.port : "") + "/ws?" + MINING_ADDRESS;
 

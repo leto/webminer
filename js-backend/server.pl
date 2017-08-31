@@ -534,6 +534,7 @@ HTML
 
 sub http {
 	my ($h, $buf) = @_;
+	D "buf=$buf";
 
 	if ($buf !~ /^(?:GET|POST) \/(\S*)/) {
 		E "$h->{my_id} not a http request $buf";
@@ -542,18 +543,21 @@ sub http {
 		return;
 	}
 
-	my $req    = $1 || 'index.html';
+	my $req      = $1 || 'index.html';
 	$h->{my_req} = $req;
+	$h->{my_file}= $req;
 	my $params;
-	if ($req =~ m/([^\?]+)(\?(.*))?/) {
-		$req            = $1;
-		$params         = $2;
-		$h->{my_file}   = $1;
-		$h->{my_params} = $2;
+	if ($req =~ m/\??([^\?]+)/) {
+		$params         = $1;
+		$h->{my_params} = $1;
 	}
 	$params ||= '';
 
 	D "$h->{my_id} get $req";
+
+	# carve off URL params from main request file
+	$req =~ s/\?.*//g;
+	$req ||= 'index.html';
 
 	if ($req =~ /^[a-z_0-9\.]+$/i && -f "static/$req") {
 		open my ($f), "static/$req" or die "open: $!";
