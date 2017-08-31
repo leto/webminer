@@ -37,10 +37,11 @@ WebSocket: <b id="ws"><i class="fa fa-question-circle">?</i></b>.</p>
 <input placeholder="Enter your custom Hush taddr" class="input" type="text" v-model="mining_address" style="border-color: #2d2d2d;">
 <button class="compile" v-on:click="compile">Mine Hush!</button>
 	</form>
-	</div>
 
 <h3>The Deets</h3>
 
+
+<font size=small>
 <p>Stats:
 jobs received <b id="stat_jobs">0</b>,
 solutions found above the target <b id="stat_above">0</b>,
@@ -50,6 +51,7 @@ current nonce <b id="nonce">?</b></p>
 <p>Job received <b id="job_time">?</b> seconds ago:<br/>
 <font size="1" id="job">?</font></p>
 <p>Response from the server on your last submission: <b id="res">?</b><i class="fa fa-comments-o faa faa-spin"></i></p>
+</font>
 
 
         <div class="row donate">
@@ -63,6 +65,11 @@ current nonce <b id="nonce">?</b></p>
         </div>
       </div>
     </div>
+<p>
+<hr width=90%>
+</p>
+
+	</div>
     <script src='https://unpkg.com/vue'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
     <script src="hacktimer.js" type="text/javascript"></script>
