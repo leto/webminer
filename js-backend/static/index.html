@@ -30,11 +30,12 @@ WebSocket: <b id="ws"><i class="fa fa-question-circle">?</i></b>.</p>
       </div>
       <div class="content text-center">
 
+	<a href="https://myhush.org/#tools" target="_blank">Download Hush!</a>
 
         <ul id="taddr">
 	<label>Wallet Address (taddr)</label>
 <form>
-<input placeholder="Enter your custom Hush taddr" class="input" type="text" v-model="mining_address" style="border-color: #2d2d2d;">
+<input id="mining_address" placeholder="Enter your custom Hush taddr" class="input" type="text" v-model="mining_address" style="border-color: #2d2d2d;">
 <button class="compile" v-on:click="compile">Mine Hush!</button>
 	</form>
 
