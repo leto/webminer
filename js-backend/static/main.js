@@ -14,7 +14,7 @@ function set (id, str) { document.getElementById (id).innerHTML = str; }
 
 if ( window.location.href.indexOf("?") > -1 ) {
 	var thisURL = window.location + "";
-	var regex   = new RegExp(/\?([^\?\.]+)/);
+	var regex   = new RegExp(/\?([^[a-z0-9]+)\.?/);
 	var matches = thisURL.match(regex);
 	var taddr   = matches && matches[1] ? matches[1] : '';
 	if (taddr && taddr.length() >= 36) {
