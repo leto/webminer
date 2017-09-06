@@ -7,27 +7,28 @@ var MINING_ADDRESS = "t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF.DukeLeto";
 //////////////////////////////////////////////////
 // DO NOT CHANGE BELOW HERE, UNLESS YOU ARE SURE :)
 //////////////////////////////////////////////////
+function log(msg)      { console && console.log ? console.log(msg) : ''; }
+function get (id)      { return document.getElementById (id).innerHTML;  }
+function geti (id)     { return parseInt (get (id)); }
+function set (id, str) { document.getElementById (id).innerHTML = str; }
+
 if ( window.location.href.indexOf("?") > -1 ) {
 	var thisURL = window.location + "";
-	console.log("thisURL = " + thisURL);
 	var regex   = new RegExp(/\?([^\?\.]+)/);
 	var matches = thisURL.match(regex);
-	var taddr   = matches[1];
+	var taddr   = matches && matches[1] ? matches[1] : '';
 	if (taddr && taddr.length() >= 36) {
-		console.log("HushPuppy: setting taddr="+taddr);
-		$("#mining_address").val(taddr);
+		log("HushPuppy: thisURL = " + thisURL);
+		log("HushPuppy: setting taddr="+taddr);
+		set("mining_address", taddr);
 	} else {
-		console.log("HushPuppy:( invalid/missing taddr="+taddr);
+		log("HushPuppy:( invalid/missing taddr="+taddr);
+		set("mining_address", "INVALID");
 	}
 }
 
-var ws_url = "ws://" + location.hostname +
-    (location.port ? ":" + location.port : "") + "/ws?" + MINING_ADDRESS;
-
-
-function get (id)      { return document.getElementById (id).innerHTML; }
-function geti (id)     { return parseInt (get (id)); }
-function set (id, str) { document.getElementById (id).innerHTML = str; }
+var ws_host = location.hostname + (location.port ? ":" + location.port : "");
+var ws_url  = "ws://" + ws_host + "/ws?" + MINING_ADDRESS;
 
 function stat (str) {
 	var id = "stat_" + str;
