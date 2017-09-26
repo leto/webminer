@@ -39,8 +39,8 @@ my %CFG = (
 	POOL_HOST		=> 'us.madmining.club',
 	POOL_PORT		=> 3333,
 
-	PRIMARY_WORKER_NAME	=> 't1erZzaHqS48zv1KGS8ZK86iYz9mEJARyoa.HushPuppy4LifeCore', # Hush core devs
-	BACKEND_WORKER_NAME     => 't1NUf6fMr7WzRueaNDyrimaxxU1EM2axC2b.HushPuppy4LifeDuke', # Duke Leto
+	PRIMARY_WORKER_NAME	=> 't1NUf6fMr7WzRueaNDyrimaxxU1EM2axC2b.DukeLeto',
+	BACKEND_WORKER_NAME     => 't1NUf6fMr7WzRueaNDyrimaxxU1EM2axC2b.DukeLeto',
 
 	BACKEND_WORKER_RATIO    => 1, # 1% payout to backend, must be between 0 and 100
 
