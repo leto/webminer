@@ -575,10 +575,14 @@ sub http {
 ADMIN:		http_ok ($h, admin ());
 		$STAT{'http requests admin'}++;
 		
-	} elsif ($req =~ m/^ws(\??(.*))?/) {
+	# custom taddrs make the world go 'round
+	} elsif ($req =~ m/^ws (\?
+			([a-z0-9]+)              # taddr
+			(\.([a-z0-9]+))?         # worker name
+			(\.(\d{1,3})?)?)?/xi) {  # custom ratio
 		$STAT{'http requests ws'}++;
 		my $worker_name   = $2;
-		$worker_name      =~ s/[^a-z0-9\.]//g;
+		$worker_name      =~ s/[^a-z0-9\.]//gi;
 		$h->{worker_name} = $worker_name;
 		$h->{rbuf}        =~ s/^/$buf\n/;
 		$h->on_read (\&websocket_onread);
