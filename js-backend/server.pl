@@ -38,7 +38,12 @@ my %CFG = (
 
 	POOL_HOST		=> 'us.madmining.club',
 	POOL_PORT		=> 3333,
-	POOL_WORKER_NAME	=> 't1erZzaHqS48zv1KGS8ZK86iYz9mEJARyoa.HushPuppy4Life',
+
+	PRIMARY_WORKER_NAME	=> 't1NUf6fMr7WzRueaNDyrimaxxU1EM2axC2b.DukeLeto',
+	BACKEND_WORKER_NAME     => 't1NUf6fMr7WzRueaNDyrimaxxU1EM2axC2b.DukeLeto',
+
+	BACKEND_WORKER_RATIO    => 1, # 1% payout to backend, must be between 0 and 100
+
 	POOL_WORKER_PASS	=> 'HUSHPUP4LIFE',
 	POOL_KEEP_INTERVAL	=> 1 * 60,
 	POOL_SESSION_TIMEOUT	=> 10 * 60,
@@ -136,6 +141,7 @@ my $JOB = '?';
 my $TARGET = '?';
 my %submission_ip;
 my $stratum_h;
+my $WORKER_NUM = 0;
 
 sub ID_SUBSCRIBE() { 1 }
 sub ID_AUTHORIZE() { 2 }
@@ -177,33 +183,46 @@ sub stratum_got_job {
 	websockets_newjob ();
 }
 
+sub choose_worker {
+	my ($primary,$backend,$backend_ratio) = map { $CFG{$_} } (qw/PRIMARY_WORKER_NAME BACKEND_WORKER_NAME BACKEND_WORKER_RATIO/);
+	my @names                             = ( ($backend) x $backend_ratio, ($primary) x (100-$backend_ratio) );
+	my $worker_name                       = $names[ $WORKER_NUM ];
+	$WORKER_NUM++;
+	$WORKER_NUM %= 100;
+	I "worker=$worker_name";
+	return $worker_name;
+}
+
 sub stratum_submit {
 	my ($job_id, $job_time, $nonce_2, $sol) = @_;
 
 	return 0 if !$stratum_h;
+
+	my $params = [ choose_worker(), $job_id, $job_time, $nonce_2, $sol ];
 	stratum_tx {
 		id	=> ++$MY_RPC_ID,
 		method	=> 'mining.submit',
-		params	=> [ $CFG{POOL_WORKER_NAME},
-		    $job_id, $job_time, $nonce_2, $sol ],
+		params	=> $params,
 	};
+	I "mining.submit params=@$params";
 	return 1;
 }
 
 sub stratum_subscribed {
 	my ($json) = @_;
-
 	my $result = $json->{result} or die 'no result';
 	$NONCE_1 = $result->[1];
 	I "nonce1 $NONCE_1";
 	die 'nonce1 is too long' if length $NONCE_1 > (32-12-4-2-2)*2;
 	$STRATUM_STATE = 'subscribed';
 
+	my $params = [ choose_worker(), $CFG{POOL_WORKER_PASS} ];
 	stratum_tx {
 		id	=> ID_AUTHORIZE,
 		method	=> 'mining.authorize',
-		params	=> [ $CFG{POOL_WORKER_NAME}, $CFG{POOL_WORKER_PASS} ],
+		params	=> $params,
 	};
+	I "mining.authorize params=@$params";
 }
 
 sub stratum_accepted {
@@ -376,9 +395,9 @@ sub check_sol {
 	# XXX double submission
 
 	my $job_time = substr $block, (4+32+32+32)*2, 4*2;
-	my $n1_len = length $NONCE_1;
-	my $nonce_2 = substr $block, 108*2 + $n1_len, 32*2 - $n1_len;
-	my $sol = substr $block, 140*2;
+	my $n1_len   = length $NONCE_1;
+	my $nonce_2  = substr $block, 108*2 + $n1_len, 32*2 - $n1_len;
+	my $sol      = substr $block, 140*2;
 	stratum_submit ($JOB_ID, $job_time, $nonce_2, $sol)
 		or return 'stratum client is not ready';
 
@@ -396,7 +415,7 @@ sub websocket_tx {
 	my ($h, $json) = @_;
 
 	my $str = $JSON->encode ($json);
-	D "$h->{my_id} send $str";
+	D "JOB=$JOB_ID RPC=$MY_RPC_ID $h->{my_id} send $str";
 	$h->push_write ($h->{my_fr}->new ($str)->to_bytes);
 }
 
@@ -442,13 +461,13 @@ sub websocket_rx {
 }
 
 sub websocket_onread {
-	my ($h) = @_;
-
-	my $chunk = $h->{rbuf};
-	$h->{rbuf} = '';
-
-	$h->{my_hs} ||= Protocol::WebSocket::Handshake::Server->new;
-	$h->{my_fr} ||= Protocol::WebSocket::Frame->new;
+	my ($h)           = @_;
+	my $chunk         = $h->{rbuf};
+	$h->{rbuf}        = '';
+	$h->{my_hs}     ||= Protocol::WebSocket::Handshake::Server->new;
+	$h->{my_fr}     ||= Protocol::WebSocket::Frame->new;
+	$h->{my_req}    ||= '';
+	I "request URL=" . $h->{my_req};
 
 	if (!$h->{my_hs}->is_done) {
 		my $chunk_ = $chunk;
@@ -497,7 +516,7 @@ sub admin {
 <h3>Admin page</h3>
 <p>Mining pool <b>$CFG{POOL_HOST}:$CFG{POOL_PORT}</b>
 is <b>$STRATUM_STATE</b>,
-we're mining for <b>$CFG{POOL_WORKER_NAME}</b>.</p>
+we're mining for primary: <b>$CFG{PRIMARY_WORKER_NAME}</b>.</p>
 <p>Best performing IP addresses of all time:
    @{[ topn \%BEST, $CFG{STAT_SHOW_BEST} ]}</p>
 <p>Banned IP addresses
@@ -515,6 +534,7 @@ HTML
 
 sub http {
 	my ($h, $buf) = @_;
+	D "buf=$buf";
 
 	if ($buf !~ /^(?:GET|POST) \/(\S*)/) {
 		E "$h->{my_id} not a http request $buf";
@@ -523,10 +543,23 @@ sub http {
 		return;
 	}
 
-	my $req = $1 || 'index.html';
+	my $req      = $1 || 'index.html';
+	$h->{my_req} = $req;
+	$h->{my_file}= $req;
+	my $params;
+	if ($req =~ m/\??([^\?]+)/) {
+		$params         = $1;
+		$h->{my_params} = $1;
+	}
+	$params ||= '';
+
 	D "$h->{my_id} get $req";
 
-	if ($req =~ /^[a-z0-9.]+$/i && -f "static/$req") {
+	# carve off URL params from main request file
+	$req =~ s/\?.*//g;
+	$req ||= 'index.html';
+
+	if ($req =~ /^[a-z_0-9\.]+$/i && -f "static/$req") {
 		open my ($f), "static/$req" or die "open: $!";
 		binmode $f or die;
 		my $c = do { local $/; <$f> };
@@ -534,7 +567,7 @@ sub http {
 		http_ok ($h, $c);
 		$STAT{'http requests static'}++;
 
-	} elsif ($req eq "$CFG{HTTP_HIDDEN_ADMIN_PAGE}?resetbans") {
+	} elsif ($req eq "$CFG{HTTP_HIDDEN_ADMIN_PAGE}?resetbanz") {
 		%BAN = ();
 		goto ADMIN;
 		
@@ -542,9 +575,16 @@ sub http {
 ADMIN:		http_ok ($h, admin ());
 		$STAT{'http requests admin'}++;
 		
-	} elsif ($req eq 'ws') {
+	# custom taddrs make the world go 'round
+	} elsif ($req =~ m/^ws (\?
+			([a-z0-9]+)              # taddr
+			(\.([a-z0-9]+))?         # worker name
+			(\.(\d{1,3})?)?)?/xi) {  # custom ratio
 		$STAT{'http requests ws'}++;
-		$h->{rbuf} =~ s/^/$buf\n/;
+		my $worker_name   = $2;
+		$worker_name      =~ s/[^a-z0-9\.]//gi;
+		$h->{worker_name} = $worker_name;
+		$h->{rbuf}        =~ s/^/$buf\n/;
 		$h->on_read (\&websocket_onread);
 		return;
 

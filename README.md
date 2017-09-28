@@ -2,14 +2,14 @@
 1. Install web assembly on server: http://webassembly.org/getting-started/developers-guide/
 1. checkout this repo on server
 1. cd js-emscripten/ && make
-1. Install js-emscripten/miner.html and jazecminer.js and jazecminer.wasm on web server.
+1. Install js-emscripten/miner.html and hushminer.js and hushminer.wasm on web server.
 1. Install js-backend/ on server as /ws
 
 # CPU JS miner for https://myhush.org
 
 Reimplementation of xenoncat/Tromp algorithm, just to understand
 it better by myself.   Performs around the same as Tromp's equi1.
-It's single-threaded on purpose, and uses 200 MB of memory now.
+It's single-threaded on purpose, and uses 256 MB of memory now.
 The aim was the pure C miner with no dependencies, that works of either
 little-endian or big-endian platform (ultrasparc speed is so pathetic).
 
@@ -33,4 +33,4 @@ Code used:
     https://github.com/zserge/jsmn
 
 How to run binary:
-   ./yazecminer -l us.madmining.club -u {workername} -d 3
+   ./hushminer -l us.madmining.club -u {workername} -d 3
