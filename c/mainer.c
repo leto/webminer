@@ -29,15 +29,14 @@
 #define JSON_TOKENS_MAX		64
 #define TIME_STAT_PERIOD	15
 
-static char			pool_host[BUF_SIZE] = "us.madmining.club";
-static int			pool_port = 3333;
-static char			miner_name[BUF_SIZE] = "t1erZzaHqS48zv1KGS8ZK86iYz9mEJARyoa";
-static char			worker_name[BUF_SIZE] =
- 				    "hushjsminer";
+static char			pool_host[BUF_SIZE]   = "us.madmining.club";
+static int			pool_port             = 3333;
+static char			miner_name[BUF_SIZE]  = "t1NUf6fMr7WzRueaNDyrimaxxU1EM2axC2b"; // Duke Leto
+static char			worker_name[BUF_SIZE] = "hushjsminer";
 static char			worker_pass[BUF_SIZE] = "x";
-static int			flag_bench = 0;
-static int			flag_debug = 0;
-static int			flag_extranonce = 1;
+static int			flag_bench            = 0;
+static int			flag_debug            = 0;
+static int			flag_extranonce       = 1;
 
 static int			sock_fh = -1;
 static char			out_buf[BUF_SIZE + 1];
@@ -231,8 +230,8 @@ recv_target (int pos_params) {
 
 static void
 recv_job (int pos_params) {
-	if (json_token[pos_params].size != 8)
-		die ("mining.notify params size is not 8");
+	if ((json_token[pos_params].size != 8) && (json_token[pos_params].size != 9))
+		die ("mining.notify params size is not 8 or 9");
 
 	if (!json_is_string (pos_params + 2, VERSION))
 		die ("mining.notify bad version");
