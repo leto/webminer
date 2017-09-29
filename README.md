@@ -5,7 +5,7 @@
 1. Install js-emscripten/miner.html and hushminer.js and hushminer.wasm on web server.
 1. Install js-backend/ on server as /ws
 
-# CPU JS miner for https://myhush.org
+# CPU Javascript miner for http://miner.myhush.org
 
 Reimplementation of xenoncat/Tromp algorithm, just to understand
 it better by myself.   Performs around the same as Tromp's equi1.
