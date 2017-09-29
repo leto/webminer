@@ -1,4 +1,9 @@
-# Getting started:
+# Hush Web Miner
+
+This miner turns CPU+RAM in a browser tab into HUSH cryptocurrency, a zkSNARK coin related to Zcash.
+
+# Installing
+
 1. Install web assembly on server: http://webassembly.org/getting-started/developers-guide/
 1. checkout this repo on server
 1. cd js-emscripten/ && make
