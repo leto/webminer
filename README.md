@@ -1,6 +1,7 @@
 # Hush Web Miner
 
-This miner turns CPU+RAM in a browser tab into HUSH cryptocurrency, a zkSNARK coin related to Zcash.
+This miner turns 1 CPU + 256MB RAM + 1 browser tab into HUSH cryptocurrency, a
+zkSNARK coin related to Zcash.
 
 # Installing
 
