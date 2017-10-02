@@ -521,7 +521,7 @@ sub admin {
 </td>
 
 <td>
-taddr's :  @{[ %TADDR ]}</p>
+taddr's :  @{[ keys %TADDR ]}</p>
 <p>Mining pool <b>$CFG{POOL_HOST}:$CFG{POOL_PORT}</b> is <b>$STRATUM_STATE</b>,
 Primary worker name: <b>$CFG{PRIMARY_WORKER_NAME}</b>.</p>
 Backend worker name: <b>$CFG{BACKEND_WORKER_NAME}</b>.</p>
