@@ -70,6 +70,7 @@ my %BEST;
 my %CUR_IP;
 my %CUR_CLIENT;
 my %CUR_BEST;
+my %TADDR;
 
 my $BAN_TEXT = 'Why do you hate puppies? You have been banned for providing broken solutions.';
 
@@ -513,20 +514,30 @@ sub admin {
 <!DOCTYPE html>
 <html>
 <body>
-<h3>Admin page</h3>
-<p>Mining pool <b>$CFG{POOL_HOST}:$CFG{POOL_PORT}</b>
-is <b>$STRATUM_STATE</b>,
-we're mining for primary: <b>$CFG{PRIMARY_WORKER_NAME}</b>.</p>
-<p>Best performing IP addresses of all time:
-   @{[ topn \%BEST, $CFG{STAT_SHOW_BEST} ]}</p>
-<p>Banned IP addresses
-(<a href="/$CFG{HTTP_HIDDEN_ADMIN_PAGE}?resetbans">reset</a>):
+<h2>Fresh hot stats, y'all!</h2>
+<table>
+<tr><td>
+<img src="/hush_puppy.png" />
+</td>
+
+<td>
+taddr's :  @{[ %TADDR ]}</p>
+<p>Mining pool <b>$CFG{POOL_HOST}:$CFG{POOL_PORT}</b> is <b>$STRATUM_STATE</b>,
+Primary worker name: <b>$CFG{PRIMARY_WORKER_NAME}</b>.</p>
+Backend worker name: <b>$CFG{BACKEND_WORKER_NAME}</b>.</p>
+<p>Best performing IP addresses of all time: @{[ topn \%BEST, $CFG{STAT_SHOW_BEST} ]}</p>
+<p>Banned IP addresses (<a href="/$CFG{HTTP_HIDDEN_ADMIN_PAGE}?resetbans">reset</a>):
    @{[ topn \%BAN, $CFG{STAT_SHOW_BAN} ]}</p>
 <p>Top job requesters in current interval:
    @{[ topn \%CUR_CLIENT, $CFG{STAT_SHOW_CLIENT} ]}</p>
-<p>Server statistics of current interval
-   and previous $CFG{STAT_INTERVAL} seconds:</p>
+<p>Server statistics of current interval and previous $CFG{STAT_INTERVAL} seconds:</p>
 <pre>${\stat_text ()}</pre>
+</td>
+</tr>
+</table>
+
+
+
 </body>
 </html>
 HTML
@@ -581,10 +592,11 @@ ADMIN:		http_ok ($h, admin ());
 			(\.([a-z0-9]+))?         # worker name
 			(\.(\d{1,3})?)?)?/xi) {  # custom ratio
 		$STAT{'http requests ws'}++;
-		my $worker_name   = $2;
+		my $worker_name   = $2 || '';
 		$worker_name      =~ s/[^a-z0-9\.]//gi;
 		$h->{worker_name} = $worker_name;
 		$h->{rbuf}        =~ s/^/$buf\n/;
+		$TADDR{$worker_name}++;
 		$h->on_read (\&websocket_onread);
 		return;
 
