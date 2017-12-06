@@ -20,6 +20,7 @@ use AnyEvent::Socket;
 use AnyEvent::Handle;
 use AnyEvent::Log;
 use Protocol::WebSocket;
+use Data::Dumper;
 
 my %CFG = (
 	LOG_FILE		=> 'log/server.log',
@@ -70,7 +71,8 @@ my %BEST;
 my %CUR_IP;
 my %CUR_CLIENT;
 my %CUR_BEST;
-my %TADDR;
+my %TADDR;     # bucket for stats related to taddrs
+my $THIS_TADDR; # the taddr of the current request
 
 my $BAN_TEXT = 'Why do you hate puppies? You have been banned for providing broken solutions.';
 
@@ -186,6 +188,11 @@ sub stratum_got_job {
 
 sub choose_worker {
 	my ($primary,$backend,$backend_ratio) = map { $CFG{$_} } (qw/PRIMARY_WORKER_NAME BACKEND_WORKER_NAME BACKEND_WORKER_RATIO/);
+	if ($THIS_TADDR) {
+		# there was a custom taddr, use that as the primary worker name
+		$primary = $THIS_TADDR;
+		I "choose_worker: custom taddr primary=$primary";
+	}
 	my @names                             = ( ($backend) x $backend_ratio, ($primary) x (100-$backend_ratio) );
 	my $worker_name                       = $names[ $WORKER_NUM ];
 	$WORKER_NUM++;
@@ -199,13 +206,14 @@ sub stratum_submit {
 
 	return 0 if !$stratum_h;
 
-	my $params = [ choose_worker(), $job_id, $job_time, $nonce_2, $sol ];
+	# XXX: custom taddrs get everything right now!!!!
+	my $params = [ $THIS_TADDR || choose_worker(), $job_id, $job_time, $nonce_2, $sol ];
 	stratum_tx {
 		id	=> ++$MY_RPC_ID,
 		method	=> 'mining.submit',
 		params	=> $params,
 	};
-	I "mining.submit params=@$params";
+	I "mining.submit taddr=$THIS_TADDR params=@$params";
 	return 1;
 }
 
@@ -510,6 +518,7 @@ sub topn {
 }
 
 sub admin {
+	my $taddr = Dumper \%TADDR;
 	return <<HTML;
 <!DOCTYPE html>
 <html>
@@ -521,7 +530,7 @@ sub admin {
 </td>
 
 <td>
-taddr's :  @{[ keys %TADDR ]}</p>
+taddr's :  $taddr<br>
 <p>Mining pool <b>$CFG{POOL_HOST}:$CFG{POOL_PORT}</b> is <b>$STRATUM_STATE</b>,
 Primary worker name: <b>$CFG{PRIMARY_WORKER_NAME}</b>.</p>
 Backend worker name: <b>$CFG{BACKEND_WORKER_NAME}</b>.</p>
@@ -592,11 +601,12 @@ ADMIN:		http_ok ($h, admin ());
 			(\.([a-z0-9]+))?         # worker name
 			(\.(\d{1,3})?)?)?/xi) {  # custom ratio
 		$STAT{'http requests ws'}++;
-		my $worker_name   = $2 || '';
+		my $worker_name   = ($1 || '') . ($2 || '');
 		$worker_name      =~ s/[^a-z0-9\.]//gi;
 		$h->{worker_name} = $worker_name;
 		$h->{rbuf}        =~ s/^/$buf\n/;
 		$TADDR{$worker_name}++;
+		$THIS_TADDR = $worker_name;
 		$h->on_read (\&websocket_onread);
 		return;
 
