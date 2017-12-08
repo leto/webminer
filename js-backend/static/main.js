@@ -12,15 +12,28 @@ function get (id)      { return document.getElementById (id).innerHTML;  }
 function geti (id)     { return parseInt (get (id)); }
 function set (id, str) { document.getElementById (id).innerHTML = str; }
 
+$("#minehush").submit(function(event) {
+	var taddr = $("#mining_address").val();
+});
+
 if ( window.location.href.indexOf("?") > -1 ) {
 	var thisURL = window.location + "";
-	var regex   = new RegExp(/\?([^[a-z0-9]+)\.?/);
+	//var regex   = new RegExp(/\?(t1[a-z0-9]+)(\.[a-z0-9]+)?/);
+	var regex   = new RegExp(/\?(t1[a-z0-9]{33})/i);
 	var matches = thisURL.match(regex);
 	var taddr   = matches && matches[1] ? matches[1] : '';
-	if (taddr && taddr.length() >= 36) {
+	log("thisURL fuck ="+thisURL);
+	log("Detected taddr=" + taddr);
+
+	// TODO: validate taddr properly
+	if (taddr && taddr.length >= 35) {
 		log("HushPuppy: thisURL = " + thisURL);
 		log("HushPuppy: setting taddr="+taddr);
-		set("mining_address", taddr);
+
+		// this updates the UI
+		$("#mining_address").val( taddr );
+		// this tells the backend
+		MINING_ADDRESS = taddr;
 	} else {
 		log("HushPuppy:( invalid/missing taddr="+taddr);
 		set("mining_address", "INVALID");
