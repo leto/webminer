@@ -2,12 +2,12 @@
 
 <html lang="en">
 <head>
-    <title>Hush Puppy Mining Pool</title>
+    <title>Hush Puppy Webminer</title>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="https://myhush.org/favicon.ico">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="Official Hush Puppy JavaScript Mining Pool">
-    <meta name="author" content="Duke Leto and Hush Core Devs">
+    <meta name="description" content="Hush Puppy Webminer">
+    <meta name="author" content="Duke Leto">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link
         href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -39,7 +39,7 @@
 <body>
     <div id="app">
         <div class="jumbo text-center">
-            <h2>Hush Puppy Web Mining Pool</h2>
+            <h2>Hush Puppy Webminer</h2>
             <i id="dashboard" class="fa fa-3x fa-dashboard"></i>
             <b>Speed</b></b>: 
             <font color="#FF0000" size=large>
@@ -64,6 +64,7 @@
                 <ul id="taddr">
                 <a href="https://myhush.org/#tools" target="_blank">Download Hush</a>
                 <label>Wallet Address (taddr)</label>
+		<div width=50>
                 <form action="/">
                     <input 
                         id="mining_address"
@@ -75,6 +76,9 @@
                     >
                     <input type=submit value="Mine Hush" id="minehush">
                 </form>
+		<a href="https://madmining.club/workers/" target=_blank id=miner_stats>Miner Stats via MadMining</a> <br>
+		<a href="https://wallet.myhush.network" target=_blank>Create new Hush address at wallet.myhush.network</a>
+		</div>
             </p>
         </div>
         <div class="content text-center">
@@ -107,7 +111,7 @@
                         Developed by <a target=_blank href="https://twitter.com/dukeleto">Duke Leto</a>
                     </p>
                     <span>
-                        <i><a href="/?t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF.developed">t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF</i>
+                        <i><a target=_blank href="/?t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF.developed">t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF</i>
                     </span>
                 </div>
                 <br>

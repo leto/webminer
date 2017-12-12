@@ -22,7 +22,7 @@ if ( window.location.href.indexOf("?") > -1 ) {
 	var regex   = new RegExp(/\?(t1[a-z0-9]{33})/i);
 	var matches = thisURL.match(regex);
 	var taddr   = matches && matches[1] ? matches[1] : '';
-	log("thisURL fuck ="+thisURL);
+	log("thisURL ="+thisURL);
 	log("Detected taddr=" + taddr);
 
 	// TODO: validate taddr properly
@@ -32,16 +32,24 @@ if ( window.location.href.indexOf("?") > -1 ) {
 
 		// this updates the UI
 		$("#mining_address").val( taddr );
+		var miner_stats = $("#miner_stats").attr('href');
+		// update stats link
+		$("#miner_stats").attr('href', miner_stats + taddr);
 		// this tells the backend
 		MINING_ADDRESS = taddr;
 	} else {
 		log("HushPuppy:( invalid/missing taddr="+taddr);
 		set("mining_address", "INVALID");
 	}
+
+	// THIS INITIATES MINING
+	worker();
 }
 
-var ws_host = location.hostname + (location.port ? ":" + location.port : "");
-var ws_url  = "ws://" + ws_host + "/ws?" + MINING_ADDRESS;
+var ws_port  = location.port ? ":" + location.port : "";
+var ws_host  = location.hostname + ws_port;
+var ws_proto = location.protocol == "https:" ? "wss://" : "ws://";
+var ws_url   = ws_proto + ws_host + "/ws?" + MINING_ADDRESS;
 
 function stat (str) {
 	var id = "stat_" + str;
@@ -195,4 +203,4 @@ function worker () {
 	}
 	setTimeout (worker, 1);
 }
-worker ();
+//worker ();
