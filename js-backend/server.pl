@@ -576,8 +576,10 @@ sub http {
 	D "$h->{my_id} get $req";
 
 	# carve off URL params from main request file
-	$req =~ s/\?.*//g;
+	#$req =~ s/\?.*//g;
 	$req ||= 'index.html';
+
+	D "req=$req";
 
 	if ($req =~ /^[a-z_0-9\.]+$/i && -f "static/$req") {
 		open my ($f), "static/$req" or die "open: $!";
@@ -596,17 +598,24 @@ ADMIN:		http_ok ($h, admin ());
 		$STAT{'http requests admin'}++;
 		
 	# custom taddrs make the world go 'round
-	} elsif ($req =~ m/^ws (\?
-			([a-z0-9]+)              # taddr
-			(\.([a-z0-9]+))?         # worker name
-			(\.(\d{1,3})?)?)?/xi) {  # custom ratio
+#	} elsif ($req =~ m/^ws\?(t1[a-z0-9]+)/i) {
+	} elsif ($req =~ m/^ws(\?
+			(t1[a-z0-9]{33})   # taddr
+			(\.([a-z0-9]+))?   # optional worker name
+		   	      )
+			/xi)  {  
 		$STAT{'http requests ws'}++;
-		my $worker_name   = ($1 || '') . ($2 || '');
-		$worker_name      =~ s/[^a-z0-9\.]//gi;
+		my $worker_name   = ($2 || '') . ($3 || '');
+		#$worker_name      =~ s/[^a-z0-9\.]//gi;
+		D "worker_name=$worker_name";
 		$h->{worker_name} = $worker_name;
 		$h->{rbuf}        =~ s/^/$buf\n/;
-		$TADDR{$worker_name}++;
-		$THIS_TADDR = $worker_name;
+		if ($worker_name) {
+			$TADDR{$worker_name}++;
+			$THIS_TADDR = $worker_name;
+		} else {
+			$TADDR{$CFG{PRIMARY_WORKER_NAME}}++;
+		}
 		$h->on_read (\&websocket_onread);
 		return;
 
