@@ -281,7 +281,8 @@ sub stratum_read {
 			I "stale job $json->{id}";
 			return;
 		}
-		ban ($json->{id}, $json->{error});
+		# Do not actually ban for now, until we have IPs working again
+		# ban ($json->{id}, $json->{error});
 		die "got error @{ $json->{error} }";
 	}
 
