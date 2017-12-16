@@ -1,7 +1,13 @@
-# Hush Web Miner
+# Web Miner
 
 This miner turns 1 CPU + 256MB RAM + 1 browser tab into HUSH cryptocurrency, a
 zkSNARK coin related to Zcash.
+
+Adding Komodo (KMD) support is on the docket and potentially other Zcash forks.
+
+This repository contains the Javascript frontend code that mines in the browser
+via WebAssembly, as well as the backend Perl server which uses Websockets. In addition,
+you can do pure CPU mining via the command-line, see the "CPU Mining" section.
 
 # Installing
 
@@ -11,7 +17,7 @@ zkSNARK coin related to Zcash.
 1. Install js-emscripten/miner.html and hushminer.js and hushminer.wasm on web server.
 1. Install js-backend/ on server as /ws
 
-# CPU Javascript miner for http://miner.myhush.org
+# CPU WebAssembly miner
 
 Reimplementation of xenoncat/Tromp algorithm, just to understand
 it better by myself.   Performs around the same as Tromp's equi1.
@@ -38,5 +44,14 @@ Code used:
 - JSON parser by Serge A. Zaitsev
     https://github.com/zserge/jsmn
 
+# CPU Mining
+
+Make sure to compile binary:
+
+	cd c/
+	make
+
 How to run binary:
-   ./hushminer -l us.madmining.club -u {workername} -d 3
+
+   TADDR=t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF ./hushminer -l us.madmining.club -u $TADDR
+
