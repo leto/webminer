@@ -53,5 +53,5 @@ Make sure to compile binary:
 
 How to run binary:
 
-   TADDR=t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF ./hushminer -l us.madmining.club -u $TADDR
+	TADDR=t1J1NGkA9FvnQyQQr8w7jYUouConMTcZaLF ./hushminer -l us.madmining.club -u $TADDR
 
