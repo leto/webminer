@@ -12,8 +12,15 @@ function get (id)      { return document.getElementById (id).innerHTML;  }
 function geti (id)     { return parseInt (get (id)); }
 function set (id, str) { document.getElementById (id).innerHTML = str; }
 
-$("#minehush").submit(function(event) {
+$("#minehush").click(function(event) {
 	var taddr = $("#mining_address").val();
+	MINING_ADDRESS = taddr;
+
+	log("Clicked mining button with taddr=" + taddr);
+
+	// redirect to mining URL
+	window.location = window.location + "?" + taddr;
+	return false;
 });
 
 if ( window.location.href.indexOf("?") > -1 ) {
@@ -37,13 +44,14 @@ if ( window.location.href.indexOf("?") > -1 ) {
 		$("#miner_stats").attr('href', miner_stats + taddr);
 		// this tells the backend
 		MINING_ADDRESS = taddr;
+
+		// THIS INITIATES MINING
+		worker();
 	} else {
 		log("HushPuppy:( invalid/missing taddr="+taddr);
 		set("mining_address", "INVALID");
 	}
 
-	// THIS INITIATES MINING
-	worker();
 }
 
 var ws_port  = location.port ? ":" + location.port : "";
@@ -95,7 +103,7 @@ function ws_send (j) {
 var state;
 function set_state (s) {
 	state = s;
-if (s == 0) {
+if (s == 0 || s == -1) {
     $("#status-icon").css("color","red");
     $("#ws-icon").css("color","red");
     $(".fa-cogs").removeClass("fa-spin");
@@ -126,12 +134,10 @@ if (s == 0) {
     $(".fa-bolt").css("color","red");
 }
 	set ("status",
-	    s == 0 ? "<font color=\"#FF0000\">still waiting for " +
-		"WebAssembly, check your JS console " +
-		"if it takes longer than 1 minute, or longer for mobile devices</font>." :
-			s == 1 ? "WebAssembly detected, waiting ...<i class='fa fa-3x fa-wrench'></i>" :
+            s == 0 ? "Please enter your HUSH transparent address to start mining!" :
+	    s == 1 ? "WebAssembly detected, waiting ...<i class='fa fa-3x fa-wrench'></i>" :
 	    s == 2 ? "Mining! <i color='green' class='fa fa-bolt fa-2x'></i>"  :
-		s == 3 ? "Mining! <i class='fa fa-bolt fa-2x'></i><i class='fa fa-bolt fa-2x'></i>" : "Something went really wrong, lol! <i class='fa fa-bomb'></i>");
+	    s == 3 ? "Mining! <i class='fa fa-bolt fa-2x'></i><i class='fa fa-bolt fa-2x'></i>" : "Something went really wrong, lol! <i class='fa fa-bomb'></i>");
 }
 set_state (0);
 
@@ -147,7 +153,7 @@ function speed () {
 		set ("run_time", tim | 0);
 	        var speed = Number (tot / tim).toFixed (3);
 		set ("speed", speed)
-	    	document.title = speed + " Sol/s ("+stat_sent+") Hush Puppy Mining Pool";
+	    	document.title = speed + " Sol/s ("+stat_sent+") Hush Puppy Webminer";
 	}
 	if (job_time)
 		set ("job_time", (cur - job_time) / 1000 | 0);
