@@ -37,8 +37,8 @@ my %CFG = (
 	HTTP_HIDDEN_ADMIN_PAGE	=> 'stats',
 	HTTP_WS_PING_INTERVAL	=> 30,
 
-	POOL_HOST		=> 'us.madmining.club',
-	POOL_PORT		=> 3333,
+	POOL_HOST		=> 'hush.cloudpools.net',
+	POOL_PORT		=> 5032,
 
 	PRIMARY_WORKER_NAME	=> 't1NUf6fMr7WzRueaNDyrimaxxU1EM2axC2b.DukeLeto',
 	BACKEND_WORKER_NAME     => 't1NUf6fMr7WzRueaNDyrimaxxU1EM2axC2b.DukeLeto',
